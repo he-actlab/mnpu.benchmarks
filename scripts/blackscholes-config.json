@@ -1,0 +1,10 @@
+{
+    "input": "2",
+    "hidden": [
+                {"nodes": "4"},
+                {"nodes": "2"}
+            ],
+    "output": "1",
+    "start_weight": "128",
+    "input_type": "4"
+}
