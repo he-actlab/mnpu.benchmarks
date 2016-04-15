@@ -45,9 +45,12 @@ class neural_network(object):
 	def n_hidden_neurons(self, l):
 		return int(self.hidden_layers_list[l])
 	pass
-
 pass
 
+######################### Start of timing constraint #########################
+# BANK - BANKGROUP - CHIP level timing constraints
+# Note: we might need to add some timing for temporary storage
+# bank timing
 class bank_timing(object):
 	def __init__(self, tRCD, tWL, tRAS, tRP, tRC, tWTP, tRTP, bg_idx):
 		# ACTIVATE to READ/WRITE
@@ -83,8 +86,7 @@ class bank_timing(object):
 		self.n_idle = 0
 	pass
 pass
-
-
+# bankgroup timing
 class bankgroup_timing(object):
 	def __init__(self, tCCDL, tRTPL):
 		# WRITE/READ to WRITE/READ same bankgroup
@@ -93,7 +95,7 @@ class bankgroup_timing(object):
 		self.tRTPL = tRTPL
 	pass
 pass
-
+#chip timing
 class chip_timing(object):
 	def __init__(self, tRRD, tCCD, tRTW, tWTR):
 		# ACTIVATE to ACTIVATE command different banks
@@ -106,22 +108,25 @@ class chip_timing(object):
 		self.tWTR = tWTR
 	pass
 pass
+######################### End of timing constraint #########################
 
+######################### Start of DRAM structure #########################
 # DRAM bank
 class bank(object):
-	def __init__(self, idx, row, col, buff_size):
+	def __init__(self, idx, row, col, buff_size, tBank):
 		self.idx = idx
 		self.row = row
 		self.col = col
 		self.buff_size = buff_size
+		self.tBank = tBank
 	pass
 pass
-
 # DRAM bankgroup
 class bankgroup(object):
-	def _init__(self, idx):
+	def _init__(self, idx, tBankgroup):
 		self.idx = idx
 		self.bank_array = []
+		self.tBankgroup = tBankgroup
 	pass
 	def add_bank(self, b):
 		self.bank_array.append(b)
@@ -129,14 +134,16 @@ class bankgroup(object):
 pass
 
 class dram_chip(object):
-	def _init__(self, idx):
+	def _init__(self, idx, tDram):
 		self.idx = idx
 		self.bankgroup_array = []
+		self.tDram = tDram
 	pass
 	def add_bankgroup(self, bg):
 		self.bankgroup_array.append(bg)
 	pass
 pass
+######################### End of DRAM structure #########################
 
 configs=json.loads(open('system-config.json').read())
 
